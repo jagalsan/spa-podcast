@@ -13,10 +13,10 @@ export const fetchApi = async <T>(
     options: ApiCallOptions = {}
 ): Promise<T> => {
     try {
-        const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+        const proxyUrl = process.env.NEXT_PUBLIC_PROXY_URL;
         const { body, queryParams, contentType } = options;
 
-        let url = `${apiUrl}=${encodeURIComponent(api)}`;
+        let url = `${proxyUrl}?url=${encodeURIComponent(api)}`;
 
         if (queryParams) {
             const queryString = new URLSearchParams(
@@ -25,16 +25,10 @@ export const fetchApi = async <T>(
             url += `?${queryString}`;
         }
 
-        const shouldCache = queryParams?.shouldCache;
-        const cacheControl = shouldCache
-            ? 'max-age=86400' // 24h = 86400s
-            : 'no-cache, no-store, must-revalidate';
-
         const headers: HeadersInit = {
             ...(contentType !== ContentType.MULTIPART && {
                 'Content-Type': contentType || ContentType.JSON,
             }),
-            'Cache-Control': cacheControl,
         };
 
         let fetchBody = body ? JSON.stringify(body) : undefined;
@@ -54,8 +48,10 @@ export const fetchApi = async <T>(
             throw new Error(`API Error: ${response.status} - ${errorBody}`);
         }
 
-        return response.json() as Promise<T>;
+        const data = await response.json();
+        return JSON.parse(data.contents) as T;
     } catch (error) {
         throw error;
+        console.error(error);
     }
 };
