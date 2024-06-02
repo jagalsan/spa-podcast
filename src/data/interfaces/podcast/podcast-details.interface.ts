@@ -3,7 +3,7 @@ export interface PodcastDetails {
     results: PodcastResult[];
   }
   
-  type PodcastResult = Track | PodcastEpisode;
+  export type PodcastResult = Track | PodcastEpisode;
   
   interface Track {
     wrapperType: "track";

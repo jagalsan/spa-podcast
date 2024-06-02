@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e7e7e7;
+    height: 40px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(2, 121, 121);
+}
+
+.mainContent {
+    position: relative;
+    background-color: #f8f8f8;
+    padding: 20px 20px;
+    min-height: calc(100dvh - 40px) // 40px header;
+}
+
+.loading {
+    width: 16px;
+    height: 16px;
+    border: 5px solid rgb(2, 121, 121);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

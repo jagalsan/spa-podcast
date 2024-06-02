@@ -1,13 +1,13 @@
 import { fetchApi } from '@/core/interceptors/http-config';
 import { HttpMethod } from '@/data/enums/method.enum';
-import { PodcastDetails } from '@/data/interfaces/podcast/podcast-detauls.interface';
-import { Podcast } from '@/data/interfaces/podcast/podcast.interface';
+import { PodcastDetails } from '@/data/interfaces/podcast/podcast-details.interface';
+import { PodcastList } from '@/data/interfaces/podcast/podcast.interface';
 
 export const getPodcasts = (
     genreId: number,
     podcastsNumber: number,
-): Promise<Podcast[]> => {
-    return fetchApi<Podcast[]>(
+): Promise<PodcastList> => {
+    return fetchApi<PodcastList>(
         `https://itunes.apple.com/us/rss/toppodcasts/limit=${podcastsNumber}/genre=${genreId}/json`,
         HttpMethod.GET
     );
