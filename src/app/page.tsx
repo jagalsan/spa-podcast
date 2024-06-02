@@ -6,6 +6,7 @@ import { getPodcasts } from '@/services/podcasts';
 import { useEffect, useState } from 'react';
 import styles from '@/styles/home.module.scss';
 import EmptyData from '@/components/empty-data/empty-data';
+import PodcastList from '@/components/podcast-list/podcast-list';
 
 export default function Page() {
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
@@ -17,10 +18,8 @@ export default function Page() {
             .then(res => {
                 setPodcasts(res.feed.entry);
                 setAllPodcasts(res.feed.entry);
-                setIsLoading(false);
             })
-            .catch(e => {
-                console.error(e);
+            .finally(() => {
                 setIsLoading(false);
             });
     }, []);
@@ -28,6 +27,18 @@ export default function Page() {
     const handleFilterPodcasts = (filtered: Podcast[]) => {
         setPodcasts(filtered);
     };
+
+    if (isLoading) {
+        return (
+            <EmptyData isLoading={isLoading} hasData={podcasts.length > 0} />
+        );
+    }
+
+    if (podcasts.length < 0) {
+        return (
+            <EmptyData isLoading={isLoading} hasData={podcasts.length > 0} />
+        );
+    }
 
     return (
         <>
@@ -39,22 +50,8 @@ export default function Page() {
                     />
                 )}
             </div>
-            <EmptyData isLoading={isLoading} hasData={podcasts.length > 0} />
             {podcasts.length > 0 && (
-                <div
-                    className={`${styles.podcastList} ${
-                        podcasts.length > 3 ? styles.podcastListBetween : ''
-                    }`}>
-                    {podcasts.map(podcast => (
-                        <PodcastCard
-                            key={podcast.id.attributes['im:id']}
-                            id={podcast.id.attributes['im:id']}
-                            title={podcast['im:name'].label}
-                            author={podcast['im:artist'].label}
-                            imageUrl={podcast['im:image'][2].label}
-                        />
-                    ))}
-                </div>
+                <PodcastList podcasts={podcasts}></PodcastList>
             )}
         </>
     );
