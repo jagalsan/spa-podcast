@@ -5,7 +5,7 @@ export interface PodcastDetails {
   
   export type PodcastResult = Track | PodcastEpisode;
   
-  interface Track {
+  export interface Track {
     wrapperType: "track";
     kind: "podcast";
     artistId: number;
@@ -39,7 +39,7 @@ export interface PodcastDetails {
     genres: string[];
   }
   
-  interface PodcastEpisode {
+  export interface PodcastEpisode {
     wrapperType: "podcastEpisode";
     kind: "podcast-episode";
     artistIds: number[];
@@ -59,7 +59,8 @@ export interface PodcastDetails {
     artworkUrl160: string;
     episodeFileExtension: string;
     episodeContentType: string;
-    trackTimeMillis: number;
+    episodeUrl: string;
+    trackTimeMillis?: number;
     previewUrl: string;
     country: string;
     genres: Genre[];

@@ -14,7 +14,6 @@ const PodcastCard: React.FC<PodcastCardProps> = ({ id, title, author, imageUrl }
   const router = useRouter();
 
   const handleClick = () => {
-    console.log(title);
     router.push(`/podcasts/${id}`);
   };
 
