@@ -16,16 +16,17 @@ export const fetchApi = async <T>(
     loadingService.setLoading(true);
     try {
         const proxyUrl = process.env.NEXT_PUBLIC_PROXY_URL;
-        const { body, queryParams, contentType } = options;
-
-        let url = `${proxyUrl}?url=${encodeURIComponent(api)}`;
+        const { queryParams, contentType } = options;
 
         if (queryParams) {
             const queryString = new URLSearchParams(
                 queryParams as any
             ).toString();
-            url += `?${queryString}`;
+
+            api += `?${queryString}`;
         }
+
+        let url = `${proxyUrl}?url=${encodeURIComponent(api)}`;
 
         const headers: HeadersInit = {
             ...(contentType !== ContentType.MULTIPART && {
@@ -33,16 +34,11 @@ export const fetchApi = async <T>(
             }),
         };
 
-        let fetchBody = body ? JSON.stringify(body) : undefined;
-
-        if (contentType === ContentType.MULTIPART && body) {
-            fetchBody = body;
-        }
-
         const response = await fetch(url, {
             method,
             headers,
-            body: fetchBody,
+            body: undefined,
+            next: { revalidate: 86401 }, //86400 one day , 86401 > one day
         });
 
         if (!response.ok) {
